@@ -11,6 +11,7 @@ abstract class Item {
   val group:   Group
 
   //--------[ Validations]----------
+  require(1 <= name.length && name.length <= 255, "Item name must be from 1 to 255 characters")
 }
 
 case class SizableItem(
@@ -19,9 +20,7 @@ case class SizableItem(
   descr:   SizeDescription,
   imgLink: URL,
   group:   Group
-) extends Item {
-  //--------[ Validations]----------
-}
+) extends Item
 
 case class NoSizeableItem(
   id:      Item.Id,
@@ -31,7 +30,8 @@ case class NoSizeableItem(
   group:   Group,
   price:   Int
 ) extends Item {
-  //--------[ Validations]----------
+  //--------[ Validations ]----------
+  require(0 < price, "Price of item must be greater than 0")
 }
 
 case class ComboItem(
@@ -41,8 +41,10 @@ case class ComboItem(
   imgLink: URL,
   price:   Int
 ) extends Item {
+  //--------[ Fields ]-------------
   override val group: Group = Item.Combo
-  //--------[ Validations]----------
+  //--------[ Validations ]----------
+  require(0 < price, "Price of item must be greater than 0")
 }
 
 object Item {

@@ -6,7 +6,11 @@ import com.reactive.pizza.utils.Message
 class Description(ingredients: Seq[String]) {
   val extraText: Option[String] = Some(Message.ExtraText)
 
-  //----------[ Validations]------------
+  //----------[ Validations ]------------
+  require(
+    ingredients.forall(v => 1 <= v.length && v.length <= 255),
+    "Contain invalid ingredient"
+  )
 }
 
 case class SizeDescription(ingredients: Seq[String], sizeInfo: Seq[SizeInfo]) extends Description(ingredients)
@@ -27,6 +31,8 @@ object Description {
   }
   //-----------------//-------------------
   case class SizeInfo(size: Size, cm: Int, price: Int) {
-    //------------[ Validations]-------------
+    //------------[ Validations ]-------------
+    require(0 < cm,    "Cm must be greater than 0")
+    require(0 < price, "Price must be greater than 0")
   }
 }

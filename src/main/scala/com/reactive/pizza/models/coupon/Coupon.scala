@@ -11,6 +11,7 @@ abstract class Coupon {
   val effect:      Effect
 
   //----------[ Validations ]--------------
+  require(1 <= descr.length && descr.length <= 255, "Description of coupon must be from 1 to 255 characters")
 }
 
 case class GiftCoupon(
@@ -30,6 +31,7 @@ case class MoneyCoupon(
   unit:        Unit
 ) extends Coupon {
   //----------[ Validations ]--------------
+  require(0 < value, "Value of coupon must be greater than 0")
 }
 
 object Coupon {

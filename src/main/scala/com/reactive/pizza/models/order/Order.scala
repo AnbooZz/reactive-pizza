@@ -5,6 +5,8 @@ import com.reactive.pizza.models.item.PickedItem
 import com.reactive.pizza.models.order.Order.{ CustomerInfo, Status }
 import org.joda.time.DateTime
 
+import scala.math.Ordered.orderingToOrdered
+
 class Order(
   id:           Order.Id,
   pikItems:     Seq[PickedItem],
@@ -16,6 +18,8 @@ class Order(
   updatedAt:    DateTime
 ) {
   //----------------[ Validations ]-------------------
+  require(totalPrice > 0,         "Total price must be greater than 0")
+  require(createdAt <= updatedAt, "UpdatedAt must be after than CreatedAt")
 }
 
 object Order {
