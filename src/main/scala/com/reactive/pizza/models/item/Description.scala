@@ -5,6 +5,8 @@ import com.reactive.pizza.utils.Message
 
 class Description(ingredients: Seq[String]) {
   val extraText: Option[String] = Some(Message.ExtraText)
+
+  //----------[ Validations]------------
 }
 
 case class SizeDescription(ingredients: Seq[String], sizeInfo: Seq[SizeInfo]) extends Description(ingredients)
@@ -24,5 +26,7 @@ object Description {
     }
   }
   //-----------------//-------------------
-  case class SizeInfo(size: Size, cm: Int, price: Int)
+  case class SizeInfo(size: Size, cm: Int, price: Int) {
+    //------------[ Validations]-------------
+  }
 }
