@@ -12,6 +12,9 @@ abstract class Item {
 
   //--------[ Validations]----------
   require(1 <= name.length && name.length <= 255, "Item name must be from 1 to 255 characters")
+
+  //--------[ Methods ]--------------
+  def getPrice: Int
 }
 
 case class SizableItem(
@@ -20,7 +23,10 @@ case class SizableItem(
   descr:   SizeDescription,
   imgLink: URL,
   group:   Group
-) extends Item
+) extends Item {
+  //--------[ Methods ]--------------
+  override def getPrice: Int = ???
+}
 
 case class NoSizeableItem(
   id:      Item.Id,
@@ -32,6 +38,8 @@ case class NoSizeableItem(
 ) extends Item {
   //--------[ Validations ]----------
   require(0 < price, "Price of item must be greater than 0")
+  //--------[ Methods ]--------------
+  override def getPrice: Int = ???
 }
 
 case class ComboItem(
@@ -45,9 +53,12 @@ case class ComboItem(
   override val group: Group = Item.Combo
   //--------[ Validations ]----------
   require(0 < price, "Price of item must be greater than 0")
+  //-----------[ Methods ]--------------
+  override def getPrice: Int = ???
 }
 
 object Item {
+  //-------------[ Typed ]------------------
   case class Id(v: String)
   //--------------//------------------
   sealed abstract class Group(val v: String)
@@ -71,4 +82,5 @@ object Item {
       case _        => throw new IllegalArgumentException(s"Illegal group: $v")
     }
   }
+  //----------------[ Methods ]-------------------
 }

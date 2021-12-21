@@ -5,9 +5,9 @@ ThisBuild / version      := "1.0.0"
 ThisBuild / scalaVersion := "2.13.7"
 //----------[ Dependences ]-------------
 val dbDependences = Seq(
-  jdbc, "mysql"       % "mysql-connector-java"   % "8.0.27",
-  "com.typesafe.play" %% "play-slick"            % "5.0.0",
-  "com.typesafe.play" %% "play-slick-evolutions" % "5.0.0",
+  "mysql" % "mysql-connector-java" % "8.0.27",
+  "com.typesafe.play" %% "play-slick" % "5.0.0",
+  "org.flywaydb" %% "flyway-play" % "7.15.0"
 )
 val scalaGuice = "net.codingwell" %% "scala-guice" % "5.0.2"
 
@@ -18,7 +18,7 @@ val commonSettings = List(
     "-deprecation",
     "-feature",
     "-unchecked",
-    "-Xlint",
+//    "-Xlint",
     "-Ywarn-dead-code",
     "-opt:l:inline",
     "-Xfatal-warnings",
@@ -38,4 +38,4 @@ lazy val root = (project in file("."))
   .disablePlugins(PlayLayoutPlugin)
   .settings(commonSettings: _*)
   .settings(libraryDependencies ++= dbDependences)
-  .settings(libraryDependencies ++= Seq(scalaGuice))
+  .settings(libraryDependencies ++= Seq(scalaGuice, guice, filters))

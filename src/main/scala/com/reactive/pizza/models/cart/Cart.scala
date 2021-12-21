@@ -17,6 +17,9 @@ class Cart(
 ) {
   //-----------------[ Validations ]--------------------
   require(createdAt <= updatedAt, "UpdatedAt must be after than CreatedAt")
+  //---------------[ Methods ]----------------
+  def getTotalPrice: Int = ???
+  def addCoupon(coupon: Coupon): Cart = ???
 }
 
 object Cart {
