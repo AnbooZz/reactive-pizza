@@ -8,7 +8,7 @@ import javax.inject.Inject
 class UserDAO @Inject()(dbComponent: MySqlDBComponent) {
   import dbComponent.driver.api._
 
-  private[UserDAO] class UserTable(tag: Tag) extends Table[User](tag, "users") with ColumnCustomType {
+  private[UserDAO] class UserTable(tag: Tag) extends Table[User](tag, "user") with ColumnCustomType {
     //----------[ Columns ]----------------------
     def id: Rep[User.Id]      = column[User.Id]("id", O.PrimaryKey)
     def username: Rep[String] = column[String]("username")

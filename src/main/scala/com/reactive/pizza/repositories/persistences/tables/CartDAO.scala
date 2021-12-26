@@ -15,7 +15,7 @@ class CartDAO @Inject()(dbComponent: MySqlDBComponent, itemDAO: ItemDAO, couponD
 
   type CartTupled = (Cart.Id, String, Option[Coupon.Id], User.Id, DateTime, DateTime)
 
-  private[CartDAO] class CartTable(tag: Tag) extends Table[CartTupled](tag, "carts") with ColumnCustomType {
+  private[CartDAO] class CartTable(tag: Tag) extends Table[CartTupled](tag, "cart") with ColumnCustomType {
     //----------[ Columns ]----------------------
     def id: Rep[Cart.Id]                 = column[Cart.Id]("id", O.PrimaryKey)
     def itemIds: Rep[String]             = column[String]("item")

@@ -13,12 +13,12 @@ class CouponDAO @Inject()(dbComponent: MySqlDBComponent, itemDAO: ItemDAO) {
 
   type CouponTupled = (Coupon.Id, String, Timestamp, Coupon.Effect, String, Option[Coupon.Unit])
 
-  private[CouponDAO] class CouponTable(tag: Tag) extends Table[CouponTupled](tag, "coupons") with ColumnCustomType {
+  private[CouponDAO] class CouponTable(tag: Tag) extends Table[CouponTupled](tag, "coupon") with ColumnCustomType {
     //----------[ Columns ]----------------------
     def id: Rep[Coupon.Id]             = column[Coupon.Id]("id", O.PrimaryKey)
     def description: Rep[String]       = column[String]("description")
-    def expiredDate: Rep[Timestamp]    = column[Timestamp]("expired")
-    def effect: Rep[Coupon.Effect]     = column[Coupon.Effect]("effect")
+    def expiredDate: Rep[Timestamp]    = column[Timestamp]("expired_date")
+    def effect: Rep[Coupon.Effect]     = column[Coupon.Effect]("effect_place")
     def value: Rep[String]             = column[String]("value")
     def unit: Rep[Option[Coupon.Unit]] = column[Option[Coupon.Unit]]("unit")
 

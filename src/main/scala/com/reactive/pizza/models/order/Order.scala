@@ -3,6 +3,7 @@ package com.reactive.pizza.models.order
 import com.reactive.pizza.models.coupon.Coupon
 import com.reactive.pizza.models.item.PickedItem
 import com.reactive.pizza.models.order.Order.{ CustomerInfo, Status }
+import com.reactive.pizza.models.user.User
 import org.joda.time.DateTime
 
 import scala.math.Ordered.orderingToOrdered
@@ -14,6 +15,7 @@ case class Order(
   customerInfo: CustomerInfo,
   totalPrice:   Int,
   status:       Status,
+  userId:       User.Id,
   createdAt:    DateTime,
   updatedAt:    DateTime
 ) {
@@ -25,9 +27,9 @@ case class Order(
 object Order {
   case class Id(v: String)
   //---------------//-----------------
-  case class CustomerInfo(fullName: String, phone: String, address: String, memo: Option[String]) {
+  case class CustomerInfo(fullname: String, phone: String, address: String, memo: Option[String]) {
     //----------------[ Validations ]-------------------
-    require(1 <= fullName.length && fullName.length <= 255, "Fullname must be from 1 to 255 characters")
+    require(1 <= fullname.length && fullname.length <= 255, "Fullname must be from 1 to 255 characters")
     require(1 <= phone.length && phone.length <= 11,        "Phone must be from 1 to 11 numbers")
     require(1 <= address.length && address.length <= 255,   "Address must be from 1 to 255 characters")
     require(

@@ -14,7 +14,7 @@ class ItemDAO @Inject()(dbComponent: MySqlDBComponent) {
 
   type ItemTupled = (Item.Id, String, Seq[String], Seq[SizeInfo], URL, Group, Boolean, Boolean, Seq[Item.Id], Option[Int])
 
-  private[ItemDAO] class ItemTable(tag: Tag)  extends Table[ItemTupled](tag, "items") with ColumnCustomType  {
+  private[ItemDAO] class ItemTable(tag: Tag)  extends Table[ItemTupled](tag, "item") with ColumnCustomType  {
     //----------[ Columns ]----------------------
     def id: Rep[Item.Id]               = column[Item.Id]("id", O.PrimaryKey)
     def name: Rep[String]              = column[String]("name")
