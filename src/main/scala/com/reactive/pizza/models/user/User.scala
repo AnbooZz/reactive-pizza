@@ -24,6 +24,6 @@ object User {
   case class Id(v: String)
   //------------[ Methods ]------------
   // For Register
-  def apply(email: String, username: String, password: String, rePassword: String): User = ???
+  def register(email: String, username: String, password: String, rePassword: String): User = ???
 
 }

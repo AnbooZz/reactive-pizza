@@ -1,7 +1,8 @@
 package com.reactive.pizza.models.item
 
-import java.net.URL
 import com.reactive.pizza.models.item.Item.Group
+
+import java.net.URL
 
 abstract class Item {
   val id:      Item.Id
@@ -47,10 +48,11 @@ case class ComboItem(
   name:    String,
   descr:   Description,
   imgLink: URL,
+  items:   Seq[Item],
   price:   Int
 ) extends Item {
   //--------[ Fields ]-------------
-  override val group: Group = Item.Combo
+  override val group: Group = Item.Group.Combo
   //--------[ Validations ]----------
   require(0 < price, "Price of item must be greater than 0")
   //-----------[ Methods ]--------------
@@ -62,14 +64,15 @@ object Item {
   case class Id(v: String)
   //--------------//------------------
   sealed abstract class Group(val v: String)
-  final case object Pizza  extends Group("Pizza")
-  final case object BBQ    extends Group("BBQ")
-  final case object Noodle extends Group("Noodle")
-  final case object Salad  extends Group("Salad")
-  final case object Drink  extends Group("Drink")
-  final case object Combo  extends Group("Combo")
-  final case object Other  extends Group("Other")
   object Group {
+    final case object Pizza  extends Group("Pizza")
+    final case object BBQ    extends Group("BBQ")
+    final case object Noodle extends Group("Noodle")
+    final case object Salad  extends Group("Salad")
+    final case object Drink  extends Group("Drink")
+    final case object Combo  extends Group("Combo")
+    final case object Other  extends Group("Other")
+
     def apply(v: String): Group = v match {
       case "Pizza"  => Pizza
       case "BBQ"    => BBQ
@@ -83,4 +86,5 @@ object Item {
     }
   }
   //----------------[ Methods ]-------------------
+
 }

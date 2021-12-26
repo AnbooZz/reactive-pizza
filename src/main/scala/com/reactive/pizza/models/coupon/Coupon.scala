@@ -1,6 +1,6 @@
 package com.reactive.pizza.models.coupon
 
-import com.reactive.pizza.models.coupon.Coupon.Effect
+import com.reactive.pizza.models.coupon.Coupon._
 import com.reactive.pizza.models.item.Item
 import org.joda.time.DateTime
 
@@ -38,9 +38,10 @@ object Coupon {
   case class Id(v: String)
   //------------//--------------
   sealed abstract class Effect(val v: String)
-  final case object Online extends Effect("Online")
-  final case object Store  extends Effect("Store")
   object Effect {
+    final case object Online extends Effect("Online")
+    final case object Store  extends Effect("Store")
+
     def apply(v: String): Effect = v match {
       case "Online" => Online
       case "Store"  => Store
@@ -50,9 +51,10 @@ object Coupon {
   }
   //------------//--------------
   sealed abstract class Unit(val v: String)
-  final case object Percent extends Unit("Percent")
-  final case object Number  extends Unit("Number")
   object Unit {
+    final case object Percent extends Unit("Percent")
+    final case object Number  extends Unit("Number")
+
     def apply(v: String): Unit = v match {
       case "Percent" => Percent
       case "Number"  => Number

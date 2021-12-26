@@ -20,7 +20,7 @@ CREATE TABLE `items`
   `group`        VARCHAR(50)  NOT NULL,
   `is_sizable`   BOOLEAN NOT NULL,
   `is_combo`     BOOLEAN NOT NULL,
-  `item_id_list` JSON NULL,
+  `item_id_seq`  TEXT NOT NULL,
   `price`        INT NULL,
   `created_at`   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at`   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -46,7 +46,7 @@ CREATE TABLE `coupons`
 CREATE TABLE `carts`
 (
   `id`          VARCHAR(32) NOT NULL,
-  `picked_item` JSON        NOT NULL,
+  `item_id_seq` TEXT        NOT NULL,
   `coupon_id`   VARCHAR(32) NULL,
   `user_id`     VARCHAR(32) NOT NULL,
   `created_at`  TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -59,7 +59,7 @@ CREATE TABLE `carts`
 CREATE TABLE `orders`
 (
   `id`               VARCHAR(32) NOT NULL,
-  `order_item`       JSON        NOT NULL,
+  `item_id_seq`      TEXT        NOT NULL,
   `coupon_id`        VARCHAR(32) NULL,
   `customer_info_id` VARCHAR(32) NOT NULL,
   `total_price`      INT NOT NULL,

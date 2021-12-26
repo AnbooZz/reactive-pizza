@@ -7,7 +7,7 @@ import org.joda.time.DateTime
 
 import scala.math.Ordered.orderingToOrdered
 
-class Cart(
+case class Cart(
   id:        Cart.Id,
   pikItems:  Seq[PickedItem],
   coupon:    Option[Coupon],
