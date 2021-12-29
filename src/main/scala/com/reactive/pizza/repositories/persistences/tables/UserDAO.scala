@@ -3,10 +3,11 @@ package com.reactive.pizza.repositories.persistences.tables
 import com.reactive.pizza.models.user.User
 import com.reactive.pizza.repositories.persistences.{ ColumnCustomType, MySqlDBComponent }
 
-import javax.inject.Inject
+import javax.inject.{ Inject, Singleton }
 
+@Singleton
 class UserDAO @Inject()(dbComponent: MySqlDBComponent) {
-  import dbComponent.driver.api._
+  import dbComponent.mysqlDriver.api._
 
   private[UserDAO] class UserTable(tag: Tag) extends Table[User](tag, "user") with ColumnCustomType {
     //----------[ Columns ]----------------------
@@ -21,5 +22,5 @@ class UserDAO @Inject()(dbComponent: MySqlDBComponent) {
     )
   }
 
-  val userQuery = TableQuery[UserTable]
+  val users = TableQuery[UserTable]
 }

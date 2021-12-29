@@ -12,7 +12,7 @@ import play.api.libs.json.Json
 import javax.inject.Inject
 
 class OrderDAO @Inject()(dbComponent: MySqlDBComponent, itemDAO: ItemDAO){
-  import dbComponent.driver.api._
+  import dbComponent.mysqlDriver.api._
 
   type OrderTupled = (Order.Id, String, Option[Coupon.Id], Int, Order.Status, User.Id, DateTime, DateTime)
 
@@ -43,8 +43,8 @@ class OrderDAO @Inject()(dbComponent: MySqlDBComponent, itemDAO: ItemDAO){
     def * = (fullname, phone, address, memo, orderId)
   }
 
-  val orderQuery    = TableQuery[OrderTable]
-  val customerQuery = TableQuery[OrderCustomerInfoTable]
+  val orders    = TableQuery[OrderTable]
+  val customers = TableQuery[OrderCustomerInfoTable]
   //-------------------[ Methods ]--------------------------
   def apply(c: OrderTupled, couponOpt: Option[Coupon], customer: CustomerInfo, itemMap: Map[Item.Id, Item]): Order = {
     val pikItemJson = Json.parse(c._2)

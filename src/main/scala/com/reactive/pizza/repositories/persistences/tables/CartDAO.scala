@@ -10,8 +10,8 @@ import play.api.libs.json.Json
 
 import javax.inject.Inject
 
-class CartDAO @Inject()(dbComponent: MySqlDBComponent, itemDAO: ItemDAO, couponDAO: CouponDAO) {
-  import dbComponent.driver.api._
+class CartDAO @Inject()(dbComponent: MySqlDBComponent, itemDAO: ItemDAO) {
+  import dbComponent.mysqlDriver.api._
 
   type CartTupled = (Cart.Id, String, Option[Coupon.Id], User.Id, DateTime, DateTime)
 
@@ -27,7 +27,7 @@ class CartDAO @Inject()(dbComponent: MySqlDBComponent, itemDAO: ItemDAO, couponD
     def * = (id, itemIds, couponId, userId, createdAt, updatedAt)
   }
 
-  val cartQuery = TableQuery[CartTable]
+  val carts = TableQuery[CartTable]
   //-------------[ Methods ]----------------------------
   def apply(c: CartTupled, couponOpt: Option[Coupon], itemMap: Map[Item.Id, Item]): Cart = {
     val pikItemJson = Json.parse(c._2)

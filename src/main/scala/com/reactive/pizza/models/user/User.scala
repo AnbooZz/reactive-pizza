@@ -1,9 +1,11 @@
 package com.reactive.pizza.models.user
 
+import com.reactive.pizza.utils.{ Encrypter, PasswordNotMatchException }
+
 case class User(
   id:       User.Id,
-  email:    String,
   username: String,
+  email:    String,
   password: String
 ) {
   //------------[ Validations ]-----------------
@@ -16,14 +18,27 @@ case class User(
    * @param password raw password
    * @return true | false
    */
-  def isLogined(username: String, password: String): Boolean = ???
+  def isLogined(username: String, password: String): Boolean = {
+    this.username == username && this.password == Encrypter.encrypt(password)
+  }
 }
 
 object User {
   //------------[ Typed ]--------------
   case class Id(v: String)
   //------------[ Methods ]------------
-  // For Register
-  def register(email: String, username: String, password: String, rePassword: String): User = ???
+  def register(email: String, username: String, password: String, rePassword: String): User = {
+    password == rePassword match {
+      case true =>
+        User(
+          id       = User.Id(Encrypter.generateId),
+          email    = email,
+          username = username,
+          password = Encrypter.encrypt(password)
+        )
+      case false =>
+        throw new PasswordNotMatchException
+    }
+  }
 
 }

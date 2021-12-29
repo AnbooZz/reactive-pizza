@@ -1,0 +1,2 @@
+#-----------[ Authentication API ]-----------------
+POST /api/v1/user @com.reactive.pizza.controllers.AuthenController.aggregate(action: String)

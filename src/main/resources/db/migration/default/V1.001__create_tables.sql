@@ -19,7 +19,6 @@ CREATE TABLE `item`
   `img_link`     VARCHAR(255) NOT NULL,
   `group`        VARCHAR(50)  NOT NULL,
   `is_sizable`   BOOLEAN NOT NULL,
-  `is_combo`     BOOLEAN NOT NULL,
   `item_id_seq`  VARCHAR(255) NOT NULL DEFAULT '[]',
   `price`        INT NULL,
   `created_at`   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

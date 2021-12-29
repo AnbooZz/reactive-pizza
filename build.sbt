@@ -9,7 +9,6 @@ val dbDependences = Seq(
   "com.typesafe.play" %% "play-slick" % "5.0.0",
   "org.flywaydb" %% "flyway-play" % "7.15.0"
 )
-val scalaGuice = "net.codingwell" %% "scala-guice" % "5.0.2"
 
 //----------[ Setting ]-----------------
 val commonSettings = List(
@@ -38,4 +37,4 @@ lazy val root = (project in file("."))
   .disablePlugins(PlayLayoutPlugin)
   .settings(commonSettings: _*)
   .settings(libraryDependencies ++= dbDependences)
-  .settings(libraryDependencies ++= Seq(scalaGuice, guice, filters))
+  .settings(libraryDependencies ++= Seq(guice, filters))

@@ -1,14 +1,13 @@
 package com.reactive.pizza.repositories.persistences
 
-import slick.jdbc.{ JdbcProfile, MySQLProfile }
+import play.api.db.slick.{ DatabaseConfigProvider, HasDatabaseConfigProvider }
+import slick.jdbc.JdbcProfile
 
-class MySqlDBComponent {
-  val driver: JdbcProfile     = MySQLProfile
-  val db: driver.api.Database = MySqlDB.connectionPool
-}
+import javax.inject.{ Inject, Singleton }
 
-object MySqlDB {
-  import slick.jdbc.MySQLProfile.api._
-
-  val connectionPool = Database.forConfig("slick.dbs.default")
+@Singleton
+class MySqlDBComponent @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
+  extends HasDatabaseConfigProvider[JdbcProfile] {
+  val mysqlDriver = profile
+  val dbAction    = db
 }
