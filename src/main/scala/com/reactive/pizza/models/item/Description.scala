@@ -7,7 +7,7 @@ import play.api.libs.json.{ JsError, JsFalse, JsObject, Json, JsResult, JsSucces
 import scala.util.{ Failure, Success, Try }
 
 class Description(val ingredients: Seq[String]) {
-  val extraText: Option[String] = Some(Message.ExtraText)
+  val extraText: Option[String] = Some(Message.EXTRA_TEXT)
 
   //----------[ Validations ]------------
   require(

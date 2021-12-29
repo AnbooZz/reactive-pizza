@@ -8,9 +8,10 @@ import com.reactive.pizza.repositories.persistences.tables.CartDAO
 import com.reactive.pizza.repositories.persistences.{ ColumnCustomType, MySqlDBComponent }
 import play.api.libs.json.Json
 
-import javax.inject.Inject
+import javax.inject.{ Inject, Singleton }
 import scala.concurrent.{ ExecutionContext, Future }
 
+@Singleton
 class CartRepositoryImpl @Inject()(cartDAO: CartDAO, dbComponent: MySqlDBComponent)(
   itemRepository:   ItemRepository,
   couponRepository: CouponRepository

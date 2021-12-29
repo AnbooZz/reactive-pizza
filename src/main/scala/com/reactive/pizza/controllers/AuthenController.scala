@@ -6,9 +6,10 @@ import com.reactive.pizza.repositories.UserRepository
 import com.reactive.pizza.utils.ExistedUsernameException
 import play.api.mvc.{ AnyContent, ControllerComponents, Request, Result }
 
-import javax.inject.Inject
+import javax.inject.{ Inject, Singleton }
 import scala.concurrent.{ ExecutionContext, Future }
 
+@Singleton
 class AuthenController @Inject()(cc: ControllerComponents, userRepository: UserRepository)(implicit val ec: ExecutionContext)
   extends BaseController(cc) {
 

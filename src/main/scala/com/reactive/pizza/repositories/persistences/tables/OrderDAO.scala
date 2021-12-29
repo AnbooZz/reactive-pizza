@@ -9,8 +9,9 @@ import com.reactive.pizza.repositories.persistences.{ ColumnCustomType, MySqlDBC
 import org.joda.time.DateTime
 import play.api.libs.json.Json
 
-import javax.inject.Inject
+import javax.inject.{ Inject, Singleton }
 
+@Singleton
 class OrderDAO @Inject()(dbComponent: MySqlDBComponent, itemDAO: ItemDAO){
   import dbComponent.mysqlDriver.api._
 

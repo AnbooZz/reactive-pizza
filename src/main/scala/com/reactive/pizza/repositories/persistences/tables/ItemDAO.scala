@@ -7,8 +7,9 @@ import com.reactive.pizza.repositories.persistences.{ ColumnCustomType, MySqlDBC
 import com.reactive.pizza.utils.{ DBMappingException, EntityNotFoundException, UnSupportedTypeException }
 
 import java.net.URL
-import javax.inject.Inject
+import javax.inject.{ Inject, Singleton }
 
+@Singleton
 class ItemDAO @Inject()(dbComponent: MySqlDBComponent) {
   import dbComponent.mysqlDriver.api._
 

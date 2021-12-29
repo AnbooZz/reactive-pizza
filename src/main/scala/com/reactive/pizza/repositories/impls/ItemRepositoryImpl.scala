@@ -6,9 +6,10 @@ import com.reactive.pizza.repositories.persistences.tables.ItemDAO
 import com.reactive.pizza.repositories.persistences.{ ColumnCustomType, MySqlDBComponent }
 import com.reactive.pizza.utils.RollbackException
 
-import javax.inject.Inject
+import javax.inject.{ Inject, Singleton }
 import scala.concurrent.{ ExecutionContext, Future }
 
+@Singleton
 class ItemRepositoryImpl @Inject()(itemDAO: ItemDAO, dbComponent: MySqlDBComponent)(implicit val ec: ExecutionContext)
   extends ItemRepository with ColumnCustomType {
 

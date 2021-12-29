@@ -6,8 +6,9 @@ import com.reactive.pizza.repositories.persistences.{ ColumnCustomType, MySqlDBC
 import com.reactive.pizza.utils.UnSupportedTypeException
 
 import java.sql.Timestamp
-import javax.inject.Inject
+import javax.inject.{ Inject, Singleton }
 
+@Singleton
 class CouponDAO @Inject()(dbComponent: MySqlDBComponent, itemDAO: ItemDAO) {
   import dbComponent.mysqlDriver.api._
 
