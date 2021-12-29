@@ -15,7 +15,7 @@ class AuthenController @Inject()(cc: ControllerComponents, userRepository: UserR
   //----------------[ Properties ]----------------
   private val LOGIN_ACTION    = "login"
   private val REGISTER_ACTION = "register"
-  private val LOGIN_FAILED    = "Username or Password is wrong. Login is failed"
+  private val LOGIN_FAILED    = "Incorrect username or password"
 
   //----------------[ Methods ]-------------------
   def aggregate(action: String) = withSecure { request =>
