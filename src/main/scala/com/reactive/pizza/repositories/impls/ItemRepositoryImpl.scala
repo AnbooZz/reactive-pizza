@@ -29,9 +29,7 @@ class ItemRepositoryImpl @Inject()(itemDAO: ItemDAO, dbComponent: MySqlDBCompone
       case Some(itemM) =>
         Future.successful(itemM.values.toSeq)
       case None        =>
-        db.run {
-          itemDAO.items.result
-        }.map { rs =>
+        db run { itemDAO.items.result } map { rs =>
           val rMap = rs.map(rsi => rsi._1 -> rsi).toMap
           rs.map(itemDAO.apply(_, rMap))
         } andThen {
@@ -49,7 +47,7 @@ class ItemRepositoryImpl @Inject()(itemDAO: ItemDAO, dbComponent: MySqlDBCompone
       case Some(itemM) =>
         Future.successful(itemM.get(id))
       case None        =>
-        (for {
+        for {
           targetItemR <- db.run(itemDAO.items.filter(_.id === id).result.headOption)
           childItemRs <- targetItemR match {
             case Some(v) if v._8.nonEmpty =>
@@ -60,7 +58,7 @@ class ItemRepositoryImpl @Inject()(itemDAO: ItemDAO, dbComponent: MySqlDBCompone
         } yield {
           val childItemRMap = childItemRs.map(r => r._1 -> r).toMap
           targetItemR.map(itemDAO.apply(_, childItemRMap))
-        })
+        }
     }
   }
 
