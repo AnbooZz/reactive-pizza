@@ -2,9 +2,7 @@ package com.reactive.pizza.models.item
 
 import com.reactive.pizza.models.item.Description.SizeInfo
 import com.reactive.pizza.utils.Message
-import play.api.libs.json.{ JsError, JsFalse, JsObject, Json, JsResult, JsSuccess, JsValue, OFormat }
-
-import scala.util.{ Failure, Success, Try }
+import play.api.libs.json.{ JsObject, Json, JsResult, JsSuccess, JsValue, OFormat }
 
 class Description(val ingredients: Seq[String]) {
   val extraText: Option[String] = Some(Message.EXTRA_TEXT)
@@ -41,13 +39,19 @@ object Description {
     require(0 < price, "Price must be greater than 0")
   }
   //-------------[ Json converters ]----------------
-  implicit val sizeFormatter = new OFormat[Size] {
-    override def reads(json: JsValue): JsResult[Size] = Try(Size(json.as[String])) match {
-      case Success(v) => JsSuccess(v)
-      case Failure(e) => JsError(e.getMessage)
-    }
+  implicit val sizeInfoFormatter = new OFormat[SizeInfo] {
+    override def reads(json: JsValue): JsResult[SizeInfo] = JsSuccess(
+      SizeInfo(
+        Size((json \ "size").as[String]),
+        (json \ "cm").as[Int],
+        (json \ "price").as[Int]
+      )
+    )
 
-    override def writes(o: Size): JsObject = Json.obj("size" -> o.v)
+    override def writes(o: SizeInfo): JsObject = Json.obj(
+      "size"  -> o.size.v,
+      "cm"    -> o.cm,
+      "price" -> o.price
+    )
   }
-  implicit val sizeInfoFormatter = Json.format[SizeInfo]
 }

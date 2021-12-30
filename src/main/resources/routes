@@ -1,2 +1,10 @@
 #-----------[ Authentication API ]-----------------
 POST /api/v1/user @com.reactive.pizza.controllers.AuthenController.aggregate(action: String)
+
+#-----------[ Item API ]---------------------
+GET  /api/v1/items                      @com.reactive.pizza.controllers.ItemController.list
+GET  /api/v1/items/$id<[A-Za-z0-9]+>    @com.reactive.pizza.controllers.ItemController.get(id: String)
+
+#-----------[ Cart API ]-------------------
+
+#-----------[ Order API ]---------------------

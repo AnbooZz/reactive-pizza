@@ -16,6 +16,13 @@ class ItemRepositoryImpl @Inject()(itemDAO: ItemDAO, dbComponent: MySqlDBCompone
   import dbComponent.mysqlDriver.api._
   private val db = dbComponent.dbAction
 
+  override def findAll: Future[Seq[Item]] = db.run {
+    itemDAO.items.result
+  }.map { rs =>
+    val rMap = rs.map(rsi => rsi._1 -> rsi).toMap
+    rs.map(itemDAO.apply(_, rMap))
+  }
+
   override def findById(id: Item.Id): Future[Option[Item]] = {
     for {
       targetItemR <- db.run(itemDAO.items.filter(_.id === id).result.headOption)
@@ -26,25 +33,24 @@ class ItemRepositoryImpl @Inject()(itemDAO: ItemDAO, dbComponent: MySqlDBCompone
           Future.successful(Nil)
       }
     } yield {
-      val childItemRMap = childItemRs.map(r => r._1 -> itemDAO.apply(r, Map.empty)).toMap
+      val childItemRMap = childItemRs.map(r => r._1 -> r).toMap
       targetItemR.map(itemDAO.apply(_, childItemRMap))
     }
   }
 
   override def filterByIds(ids: Seq[Item.Id]): Future[Seq[Item]] = {
     // Map[Item.Id, Map[Item.Id, Item]] -> Map[ComboItemId, Map[ChildItemId, ChildItem]]
-    def filterComboItems(targetItemRs: Seq[itemDAO.ItemTupled]): Future[Map[Item.Id, Map[Item.Id, Item]]] = {
+    def filterComboItems(targetItemRs: Seq[itemDAO.ItemTupled]): Future[Map[Item.Id, Map[Item.Id, itemDAO.ItemTupled]]] = {
       val comboItemRs    = targetItemRs.filter(_._8.nonEmpty)
       val childItemIds   = comboItemRs.flatMap(_._8)
 
       db.run(itemDAO.items.filter(_.id inSet childItemIds).result)
-        .map(_.map(itemDAO.apply(_, Map.empty)))
         .map { items =>
-          val itemMap = items.map(item => item.id -> item).toMap
+          val itemMap = items.map(item => item._1 -> item).toMap
           comboItemRs.map { ci =>
             ci._1 -> {
               ci._8.map(id => itemMap.getOrElse(id, throw itemDAO.notFound(id)))
-                   .map(item => item.id -> item).toMap
+                   .map(item => item._1 -> item).toMap
             }
           }.toMap
         }
@@ -61,9 +67,6 @@ class ItemRepositoryImpl @Inject()(itemDAO: ItemDAO, dbComponent: MySqlDBCompone
   }
 
   override def store(items: Seq[Item]): Future[Unit] = db.run {
-    (itemDAO.items ++= items.map(itemDAO.unapply))
-      .flatMap { _ =>
-        DBIO.failed(new RollbackException("Rollback for store item list"))
-      }.transactionally
-  }
+    itemDAO.items ++= items.map(itemDAO.unapply)
+  }.map(_ => ())
 }

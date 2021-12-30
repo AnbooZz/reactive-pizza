@@ -32,7 +32,7 @@ class ItemDAO @Inject()(dbComponent: MySqlDBComponent) {
 
   val items = TableQuery[ItemTable]
   //----------[ Methods ]----------------------
-  def apply(thisR: ItemTupled, thatRMap: Map[Item.Id, Item]): Item = {
+  def apply(thisR: ItemTupled, thatRMap: Map[Item.Id, ItemTupled]): Item = {
     thisR._7 -> thisR._8.nonEmpty match {
       case (true, false) =>
         val description = SizeDescription(thisR._3, thisR._4)
@@ -41,6 +41,7 @@ class ItemDAO @Inject()(dbComponent: MySqlDBComponent) {
       case (false, true) =>
         val description = new Description(thisR._3)
         val items       = thisR._8.map(id => thatRMap.getOrElse(id, throw notFound(id)))
+                                  .map(apply(_, Map.empty))
         ComboItem(thisR._1, thisR._2, description, thisR._5, items, thisR._9.getOrElse(0))
 
       case (false, false) =>

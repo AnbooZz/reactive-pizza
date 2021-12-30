@@ -1,10 +1,13 @@
 package com.reactive.pizza.repositories
 
+import com.google.inject.ImplementedBy
 import com.reactive.pizza.models.cart.Cart
 import com.reactive.pizza.models.user.User
+import com.reactive.pizza.repositories.impls.CartRepositoryImpl
 
 import scala.concurrent.Future
 
+@ImplementedBy(classOf[CartRepositoryImpl])
 trait CartRepository {
   //-----------[ Queries ]-----------------
   def findByUserId(id: User.Id): Future[Option[Cart]]

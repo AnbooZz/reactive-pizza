@@ -17,6 +17,12 @@ class ErrorHandler @Inject()(
   router:        Provider[Router]
 ) extends DefaultHttpErrorHandler(env, conf, sourceMapper, router) with Logging {
 
+  override def onClientError(request: RequestHeader, statusCode: Int, message: String): Future[Result] = {
+    statusCode match {
+      case _ => Future.successful(ErrorHandler.badRequest)
+    }
+  }
+
   override def onServerError(request: RequestHeader, ex: Throwable): Future[Result] = {
     ex.printStackTrace()
     logger.error(s"Happen error: ${ex.getMessage}")
