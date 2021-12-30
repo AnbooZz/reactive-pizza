@@ -4,37 +4,63 @@ import com.reactive.pizza.models.item.Item
 import com.reactive.pizza.repositories.ItemRepository
 import com.reactive.pizza.repositories.persistences.tables.ItemDAO
 import com.reactive.pizza.repositories.persistences.{ ColumnCustomType, MySqlDBComponent }
-import com.reactive.pizza.utils.RollbackException
+import com.reactive.pizza.utils.FailedCachingException
+import play.api.cache.AsyncCacheApi
 
 import javax.inject.{ Inject, Singleton }
 import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.duration.DurationInt
+import scala.util.{ Failure, Success }
 
 @Singleton
-class ItemRepositoryImpl @Inject()(itemDAO: ItemDAO, dbComponent: MySqlDBComponent)(implicit val ec: ExecutionContext)
+class ItemRepositoryImpl @Inject()(itemDAO: ItemDAO, dbComponent: MySqlDBComponent, cache: AsyncCacheApi)(implicit val ec: ExecutionContext)
   extends ItemRepository with ColumnCustomType {
 
+  //--------------[ Properties ]---------------------------
   import dbComponent.mysqlDriver.api._
   private val db = dbComponent.dbAction
 
-  override def findAll: Future[Seq[Item]] = db.run {
-    itemDAO.items.result
-  }.map { rs =>
-    val rMap = rs.map(rsi => rsi._1 -> rsi).toMap
-    rs.map(itemDAO.apply(_, rMap))
+  private val ALL_ITEM_KEY   = "all_item"
+  private val CACHED_TIMEOUT = 24.hours
+
+  //---------------[ Methods ]------------------------------
+  override def findAll: Future[Seq[Item]] = {
+    cache.get[Map[Item.Id, Item]](ALL_ITEM_KEY).flatMap {
+      case Some(itemM) =>
+        Future.successful(itemM.values.toSeq)
+      case None        =>
+        db.run {
+          itemDAO.items.result
+        }.map { rs =>
+          val rMap = rs.map(rsi => rsi._1 -> rsi).toMap
+          rs.map(itemDAO.apply(_, rMap))
+        } andThen {
+          case Success(items) =>
+            val itemM = items.map(item => item.id -> item).toMap
+            cache.set(ALL_ITEM_KEY, itemM, CACHED_TIMEOUT)
+          case Failure(e)     =>
+            throw new FailedCachingException(s"Set items cache is failed with error: ${e.getMessage}")
+        }
+    }
   }
 
   override def findById(id: Item.Id): Future[Option[Item]] = {
-    for {
-      targetItemR <- db.run(itemDAO.items.filter(_.id === id).result.headOption)
-      childItemRs <- targetItemR match {
-        case Some(v) if v._8.nonEmpty =>
-          db.run(itemDAO.items.filter(_.id inSet v._8).result)
-        case _                        =>
-          Future.successful(Nil)
-      }
-    } yield {
-      val childItemRMap = childItemRs.map(r => r._1 -> r).toMap
-      targetItemR.map(itemDAO.apply(_, childItemRMap))
+    cache.get[Map[Item.Id, Item]](ALL_ITEM_KEY).flatMap {
+      case Some(itemM) =>
+        Future.successful(itemM.get(id))
+      case None        =>
+        (for {
+          targetItemR <- db.run(itemDAO.items.filter(_.id === id).result.headOption)
+          childItemRs <- targetItemR match {
+            case Some(v) if v._8.nonEmpty =>
+              db.run(itemDAO.items.filter(_.id inSet v._8).result)
+            case _                        =>
+              Future.successful(Nil)
+          }
+        } yield {
+          val childItemRMap = childItemRs.map(r => r._1 -> r).toMap
+          targetItemR.map(itemDAO.apply(_, childItemRMap))
+        })
     }
   }
 
@@ -56,13 +82,21 @@ class ItemRepositoryImpl @Inject()(itemDAO: ItemDAO, dbComponent: MySqlDBCompone
         }
     }
 
-    for {
-      targetItemRs <- db.run(itemDAO.items.filter(_.id inSet ids).result)
-      childItemMap <- filterComboItems(targetItemRs)
-    } yield {
-      targetItemRs.map { targetItemR =>
-        itemDAO.apply(targetItemR, childItemMap.getOrElse(targetItemR._1, Map.empty))
-      }
+    //------------/ Main method /----------------------
+    cache.get[Map[Item.Id, Item]](ALL_ITEM_KEY).flatMap {
+      case Some(itemM) =>
+        Future.successful {
+          ids.map(id => itemM.getOrElse(id, throw itemDAO.notFound(id)))
+        }
+      case None        =>
+        for {
+          targetItemRs <- db.run(itemDAO.items.filter(_.id inSet ids).result)
+          childItemMap <- filterComboItems(targetItemRs)
+        } yield {
+          targetItemRs.map { targetItemR =>
+            itemDAO.apply(targetItemR, childItemMap.getOrElse(targetItemR._1, Map.empty))
+          }
+        }
     }
   }
 

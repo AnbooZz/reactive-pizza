@@ -11,6 +11,7 @@ abstract class DBException(msg: String)    extends BaseException(msg)
 class DBMappingException(msg: String)      extends DBException(msg)
 class EntityNotFoundException(msg: String) extends DBException(msg)
 class RollbackException(msg: String)       extends DBException(msg)
+class FailedCachingException(msg: String)  extends DBException(msg)
 //-----------[ API Exceptions ]--------------------------------
 abstract class APIException(msg: String) extends BaseException(msg)
 class UnAuthorizedException              extends APIException("")
