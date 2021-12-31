@@ -8,7 +8,7 @@ import com.reactive.pizza.models.item.Item._
 import com.reactive.pizza.models.order.Order
 import com.reactive.pizza.models.user.User
 import org.joda.time.DateTime
-import play.api.libs.json.{ Json, JsValue }
+import play.api.libs.json.Json
 
 import java.net.URL
 import java.sql.Timestamp

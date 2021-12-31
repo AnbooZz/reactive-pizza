@@ -1,6 +1,7 @@
 package com.reactive.pizza.jsons.writes
 
 import com.reactive.pizza.models.item.{ ComboItem, Item, NoSizeableItem, SizableItem }
+import com.reactive.pizza.utils.UnExpectedItemException
 import play.api.libs.json.Json
 
 case class ItemDTO(
@@ -63,6 +64,8 @@ object ItemDTO {
           group       = ci.group.v,
           price       = Some(s"${ci.price}.000")
         )
+      case _                   =>
+        throw new UnExpectedItemException("Item type is invalid")
     }
   }
 

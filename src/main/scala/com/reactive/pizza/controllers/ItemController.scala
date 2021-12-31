@@ -5,7 +5,6 @@ import com.reactive.pizza.dummy.ItemDummy
 import com.reactive.pizza.jsons.writes.ItemDTO
 import com.reactive.pizza.models.item.Item
 import com.reactive.pizza.repositories.ItemRepository
-import play.api.cache.Cached
 import play.api.mvc.ControllerComponents
 
 import javax.inject.{ Inject, Singleton }

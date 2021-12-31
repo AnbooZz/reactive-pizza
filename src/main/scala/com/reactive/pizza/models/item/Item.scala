@@ -1,8 +1,6 @@
 package com.reactive.pizza.models.item
 
-import com.reactive.pizza.models.item.Description.Size
 import com.reactive.pizza.models.item.Item.Group
-
 import java.net.URL
 
 abstract class Item {

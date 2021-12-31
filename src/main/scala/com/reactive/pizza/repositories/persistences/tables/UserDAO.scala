@@ -16,7 +16,7 @@ class UserDAO @Inject()(dbComponent: MySqlDBComponent) {
     def email: Rep[String]    = column[String]("email")
     def password: Rep[String] = column[String]("password")
 
-    override def * = (id, username, email, password) <> (
+    override def * = (id, username, email, password).<>[User] (
       t => User(t._1, t._2, t._3, t._4),
       User.unapply
     )

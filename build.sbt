@@ -1,3 +1,5 @@
+import play.sbt.routes.RoutesKeys
+RoutesKeys.routesImport := Seq.empty
 //-------[ Project Information ]------------
 name                     := "reactive-pizza"
 description              := "An Example for N-tiers layer"
@@ -17,7 +19,7 @@ val commonSettings = List(
     "-deprecation",
     "-feature",
     "-unchecked",
-//    "-Xlint",
+    "-Xlint",
     "-Ywarn-dead-code",
     "-opt:l:inline",
     "-Xfatal-warnings",

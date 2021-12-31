@@ -2,10 +2,7 @@ package com.reactive.pizza.models.item
 
 import com.reactive.pizza.models.item.Description.Size
 import com.reactive.pizza.utils.UnExpectedItemException
-import play.api.data.format
 import play.api.libs.json.{ Json, JsValue, Writes }
-
-import scala.annotation.tailrec
 
 case class PickedItem(item: Item, quantity: Int, size: Option[Size]) {
   //---------------[ Validations ]------------------
@@ -22,6 +19,8 @@ case class PickedItem(item: Item, quantity: Int, size: Option[Size]) {
         ns.price
       case cb: ComboItem      =>
         cb.price
+      case _                  =>
+        throw new UnExpectedItemException("Item type is invalid")
     }
   }
 
