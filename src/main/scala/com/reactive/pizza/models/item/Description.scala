@@ -17,7 +17,7 @@ class Description(val ingredients: Seq[String]) {
 case class SizeDescription(override val ingredients: Seq[String], sizeInfo: Seq[SizeInfo]) extends Description(ingredients)
 
 object Description {
-  //-------------[ Types ]---------------------
+  //-------------[ Class definitions ]---------------------
   sealed abstract class Size(val v: String)
   object Size {
     final case object S extends Size("S")

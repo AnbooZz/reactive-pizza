@@ -4,8 +4,10 @@ import java.security.{ MessageDigest, SecureRandom }
 import java.util.UUID
 
 object Encrypter {
+  //----------[ Properties ]-----------------
   private lazy val SOLT = "124edaa9-e888-480f-a442-9d101c931a0e"
 
+  //----------[ Methods ]-----------------
   /**
    * @return encrypted string has length is 32
    */

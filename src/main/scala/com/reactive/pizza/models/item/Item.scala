@@ -49,7 +49,7 @@ case class ComboItem(
 }
 
 object Item {
-  //-------------[ Typed ]------------------
+  //-------------[ Class definitions ]------------------
   case class Id(v: String)
   //--------------//------------------
   sealed abstract class Group(val v: String)

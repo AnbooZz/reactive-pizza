@@ -13,9 +13,11 @@ import scala.concurrent.{ ExecutionContext, Future }
 class OrderRepositoryImpl @Inject()(orderDAO: OrderDAO, dbComponent: MySqlDBComponent)(implicit val ec: ExecutionContext)
   extends OrderRepository with ColumnCustomType {
 
+  //--------------[ Properties ]---------------------------
   import dbComponent.mysqlDriver.api._
   private val db = dbComponent.dbAction
 
+  //----------[ Methods ]---------------------
   override def store(order: Order): Future[Unit] = db.run {
     (for {
       _ <- orderDAO.orders    += orderDAO.unapply(order)

@@ -17,9 +17,11 @@ class CartRepositoryImpl @Inject()(cartDAO: CartDAO, dbComponent: MySqlDBCompone
   couponRepository: CouponRepository
 )(implicit val ec: ExecutionContext) extends CartRepository with ColumnCustomType {
 
+  //--------[ Properties ]----------------------
   import dbComponent.mysqlDriver.api._
   private val db = dbComponent.dbAction
 
+  //----------[ Methods ]---------------------
   override def findByUserId(id: User.Id): Future[Option[Cart]] = findBy {
     db.run(cartDAO.carts.filter(_.userId === id).result.headOption)
   }

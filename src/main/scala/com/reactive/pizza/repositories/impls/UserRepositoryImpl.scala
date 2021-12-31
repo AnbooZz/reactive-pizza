@@ -12,9 +12,11 @@ import scala.concurrent.{ ExecutionContext, Future }
 class UserRepositoryImpl @Inject()(userDAO: UserDAO, dbComponent: MySqlDBComponent)(implicit val ec: ExecutionContext)
   extends UserRepository with ColumnCustomType {
 
+  //--------------[ Properties ]---------------------------
   import dbComponent.mysqlDriver.api._
   private val db = dbComponent.dbAction
 
+  //----------[ Methods ]---------------------
   override def findByUsername(v: String): Future[Option[User]] = db.run {
     userDAO.users
       .filter(_.username === v)

@@ -31,10 +31,12 @@ case class PickedItem(item: Item, quantity: Int, size: Option[Size]) {
     }
   }
 
+  //--------------[ Exceptions ]--------------------------
   private lazy val itemWrong = new UnExpectedItemException(s"Not found valid size for Item: ${item.id.v}")
 }
 
 object PickedItem {
+  //----------[ Json converter ]-------------------
   implicit val pikItemWriter: Writes[PickedItem] = (pi: PickedItem) => {
     Json.obj(
       "itemId" -> pi.item.id.v,
@@ -43,6 +45,7 @@ object PickedItem {
     )
   }
 
+  //--------------[ Methods ]-----------------------
   def apply(json: JsValue, item: Item): PickedItem = {
     val quantity = (json \ "quantity").as[Int]
     val size     = (json \ "size").asOpt[String].map(Size.apply)

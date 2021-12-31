@@ -7,7 +7,7 @@ import play.api.mvc.{ AbstractController, AnyContent, ControllerComponents, Requ
 import scala.concurrent.Future
 
 abstract class BaseController(cc: ControllerComponents) extends AbstractController(cc) with APIHelper with XssFilter {
-
+  //----------[ Typed definitions ]-------------------
   type Req = Request[AnyContent]
   type Res = Future[Result]
 

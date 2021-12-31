@@ -24,7 +24,7 @@ case class User(
 }
 
 object User {
-  //------------[ Typed ]--------------
+  //------------[ Class definitions ]--------------
   case class Id(v: String)
   //------------[ Methods ]------------
   def register(email: String, username: String, password: String, rePassword: String): User = {

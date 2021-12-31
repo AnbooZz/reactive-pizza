@@ -14,7 +14,6 @@ import scala.concurrent.duration.DurationInt
 class AuthService @Inject()(userRepository: UserRepository, cached: AsyncCacheApi)(implicit val ec: ExecutionContext) {
   //--------------[ Properties ]---------------------
   private val CACHE_TIMEOUT = 1.hours
-
   val SESSION_KEY = "id"
 
   def check[T](f: User => Request[T] => Future[Result], req: Request[T]): Future[Result] = {

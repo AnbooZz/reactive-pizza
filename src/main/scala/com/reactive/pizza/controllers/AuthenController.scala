@@ -24,7 +24,6 @@ class AuthenController @Inject()(cc: ControllerComponents, userRepository: UserR
     action match {
       case LOGIN_ACTION    => login(request)
       case REGISTER_ACTION => register(request)
-
       case _               => badRequest(BAD_REQUEST_MSG)
     }
   }

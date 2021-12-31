@@ -32,7 +32,7 @@ case class MoneyCoupon(
 ) extends Coupon {
   //----------[ Validations ]--------------
   require(0 < value, "Value of coupon must be greater than 0")
-
+  //----------[ Methods ]------------------
   def reduce(price: Int): Int = {
     unit match {
       case Unit.Number  => price - value
@@ -42,6 +42,7 @@ case class MoneyCoupon(
 }
 
 object Coupon {
+  //-----------[ Class definitions ]-----------------------
   case class Id(v: String)
   //------------//--------------
   sealed abstract class Effect(val v: String)
