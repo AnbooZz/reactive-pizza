@@ -6,7 +6,7 @@ import com.reactive.pizza.models.item.{ Item, PickedItem }
 import com.reactive.pizza.models.user.User
 import com.reactive.pizza.repositories.persistences.{ ColumnCustomType, MySqlDBComponent }
 import org.joda.time.DateTime
-import play.api.libs.json.Json
+import play.api.libs.json.{ Json, JsValue }
 
 import javax.inject._
 
@@ -31,14 +31,14 @@ class CartDAO @Inject()(dbComponent: MySqlDBComponent, itemDAO: ItemDAO) {
   val carts = TableQuery[CartTable]
   //-------------[ Methods ]----------------------------
   def apply(c: CartTupled, couponOpt: Option[Coupon], itemMap: Map[Item.Id, Item]): Cart = {
-    val pikItemJson = Json.parse(c._2)
-    val pikItems    = (pikItemJson \\ "itemId")
-      .map(json => {
-        val itemId = Item.Id(json.as[String])
-        val item   = itemMap.getOrElse(itemId, throw itemDAO.notFound(itemId))
+    val pikItemsJson = Json.parse(c._2).as[Seq[JsValue]]
+    val pikItems     = pikItemsJson.map { json =>
+      val idStr  = (json \ "itemId").as[String]
+      val itemId = Item.Id(idStr)
+      val item   = itemMap.getOrElse(itemId, throw itemDAO.notFound(itemId))
 
-        PickedItem(pikItemJson, item)
-      }).toSeq
+      PickedItem(json, item)
+    }
 
     Cart(c._1, pikItems, couponOpt, c._4, c._5, c._6)
   }

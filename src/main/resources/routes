@@ -11,4 +11,4 @@ POST    /api/v1/cart                      @com.reactive.pizza.controllers.CartCo
 PUT     /api/v1/cart                      @com.reactive.pizza.controllers.CartController.addItem(userId: String)
 
 #-----------[ Order API ]---------------------
-POST    /api/v1/orders                    @com.reactive.pizza.controllers.CartController.addItem(userId: String)
+POST    /api/v1/orders                    @com.reactive.pizza.controllers.OrderController.create(userId: String)
