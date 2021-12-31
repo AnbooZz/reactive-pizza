@@ -32,6 +32,7 @@ class OrderController @Inject()(
           _       <- orderRepository.store(order)
           _       <- cartRepository.update(cart.reset)
         } yield success()
+
       case None      =>
         badRequest(BAD_REQUEST_MSG)
     }

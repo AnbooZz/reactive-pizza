@@ -16,9 +16,9 @@ class ItemDummy @Inject()(itemRepository: ItemRepository)(implicit val ec: Execu
     for {
       items <- itemRepository.findAll
       _     <- items.isEmpty match {
-        case true  => itemRepository.store(ItemDummy.items)
-        case false => Future.successful(())
-      }
+                 case true  => itemRepository.store(ItemDummy.items)
+                 case false => Future.successful(())
+               }
     } yield ()
   }
 
