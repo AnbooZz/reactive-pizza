@@ -6,6 +6,9 @@ GET  /api/v1/items                      @com.reactive.pizza.controllers.ItemCont
 GET  /api/v1/items/$id<[A-Za-z0-9]+>    @com.reactive.pizza.controllers.ItemController.get(id: String)
 
 #-----------[ Cart API ]-------------------
-GET  /api/v1/cart                       @com.reactive.pizza.controllers.CartController.getByUser(id: String)
+GET     /api/v1/cart                      @com.reactive.pizza.controllers.CartController.get(userId: String)
+POST    /api/v1/cart                      @com.reactive.pizza.controllers.CartController.addItem(userId: String)
+PUT     /api/v1/cart                      @com.reactive.pizza.controllers.CartController.addItem(userId: String)
 
 #-----------[ Order API ]---------------------
+POST    /api/v1/orders                    @com.reactive.pizza.controllers.CartController.addItem(userId: String)

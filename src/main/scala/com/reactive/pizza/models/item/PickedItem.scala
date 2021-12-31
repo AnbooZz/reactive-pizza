@@ -13,12 +13,12 @@ case class PickedItem(item: Item, quantity: Int, size: Option[Size]) {
     item match {
       case si: SizableItem    =>
         si.descr.sizeInfo.find(sz => size.contains(sz.size))
-                         .map(_.price)
+                         .map(_.price * quantity)
                          .getOrElse(throw itemWrong)
       case ns: NoSizeableItem =>
-        ns.price
+        ns.price * quantity
       case cb: ComboItem      =>
-        cb.price
+        cb.price * quantity
       case _                  =>
         throw new UnExpectedItemException("Item type is invalid")
     }

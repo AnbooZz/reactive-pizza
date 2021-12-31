@@ -1,9 +1,11 @@
 package com.reactive.pizza.models.order
 
+import com.reactive.pizza.models.cart.Cart
 import com.reactive.pizza.models.coupon.Coupon
 import com.reactive.pizza.models.item.PickedItem
 import com.reactive.pizza.models.order.Order.{ CustomerInfo, Status }
 import com.reactive.pizza.models.user.User
+import com.reactive.pizza.utils.Encrypter
 import org.joda.time.DateTime
 
 import scala.math.Ordered.orderingToOrdered
@@ -25,6 +27,7 @@ case class Order(
 }
 
 object Order {
+  //----------------[ Class definitions ]-----------------------
   case class Id(v: String)
   //---------------//-----------------
   case class CustomerInfo(fullname: String, phone: String, address: String, memo: Option[String]) {
@@ -54,4 +57,16 @@ object Order {
       case _            => throw new IllegalArgumentException(s"Illegal order status: $v")
     }
   }
+  //----------------[ Methods ]-----------------------
+  def apply(userId: User.Id, cart: Cart, customerInfo: CustomerInfo): Order = new Order(
+    id           = Id(Encrypter.generateId),
+    pikItems     = cart.pikItems,
+    coupon       = cart.coupon,
+    customerInfo = customerInfo,
+    totalPrice   = cart.getTotalPrice,
+    status       = Status.Processing,
+    userId       = userId,
+    createdAt    = new DateTime(),
+    updatedAt    = new DateTime()
+  )
 }
