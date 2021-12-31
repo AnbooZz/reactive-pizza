@@ -3,6 +3,7 @@ package com.reactive.pizza.controllers
 import com.reactive.pizza.controllers.common.BaseController
 import com.reactive.pizza.jsons.reads.{ LoginDTO, RegisterDTO }
 import com.reactive.pizza.repositories.UserRepository
+import com.reactive.pizza.services.AuthService
 import com.reactive.pizza.utils.ExistedUsernameException
 import play.api.mvc.{ AnyContent, ControllerComponents, Request, Result }
 
@@ -10,7 +11,7 @@ import javax.inject.{ Inject, Singleton }
 import scala.concurrent.{ ExecutionContext, Future }
 
 @Singleton
-class AuthenController @Inject()(cc: ControllerComponents, userRepository: UserRepository)(implicit val ec: ExecutionContext)
+class AuthenController @Inject()(cc: ControllerComponents, userRepository: UserRepository, authService: AuthService)(implicit val ec: ExecutionContext)
   extends BaseController(cc) {
 
   //----------------[ Properties ]----------------
@@ -40,7 +41,7 @@ class AuthenController @Inject()(cc: ControllerComponents, userRepository: UserR
             case None       => false
           }
         } yield {
-          if (isValid) success()
+          if (isValid) success().withSession(authService.SESSION_KEY -> userOpt.get.id.v)
           else         badRequest(LOGIN_FAILED)
         }
       case None      =>

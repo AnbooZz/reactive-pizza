@@ -3,14 +3,14 @@ package com.reactive.pizza.repositories.impls
 import com.reactive.pizza.models.user.User
 import com.reactive.pizza.repositories.UserRepository
 import com.reactive.pizza.repositories.persistences.tables.UserDAO
-import com.reactive.pizza.repositories.persistences.MySqlDBComponent
+import com.reactive.pizza.repositories.persistences.{ ColumnCustomType, MySqlDBComponent }
 
 import javax.inject._
 import scala.concurrent.{ ExecutionContext, Future }
 
 @Singleton
 class UserRepositoryImpl @Inject()(userDAO: UserDAO, dbComponent: MySqlDBComponent)(implicit val ec: ExecutionContext)
-  extends UserRepository {
+  extends UserRepository with ColumnCustomType {
 
   import dbComponent.mysqlDriver.api._
   private val db = dbComponent.dbAction
@@ -18,6 +18,12 @@ class UserRepositoryImpl @Inject()(userDAO: UserDAO, dbComponent: MySqlDBCompone
   override def findByUsername(v: String): Future[Option[User]] = db.run {
     userDAO.users
       .filter(_.username === v)
+      .result.headOption
+  }
+
+  override def findById(userId: User.Id): Future[Option[User]] = db.run {
+    userDAO.users
+      .filter(_.id === userId)
       .result.headOption
   }
 

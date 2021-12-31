@@ -32,6 +32,13 @@ case class MoneyCoupon(
 ) extends Coupon {
   //----------[ Validations ]--------------
   require(0 < value, "Value of coupon must be greater than 0")
+
+  def reduce(price: Int): Int = {
+    unit match {
+      case Unit.Number  => price - value
+      case Unit.Percent => price - price * value / 100
+    }
+  }
 }
 
 object Coupon {

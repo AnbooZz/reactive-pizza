@@ -1,5 +1,6 @@
 package com.reactive.pizza.models.item
 
+import com.reactive.pizza.models.item.Description.Size
 import com.reactive.pizza.models.item.Item.Group
 
 import java.net.URL
@@ -13,9 +14,6 @@ abstract class Item {
 
   //--------[ Validations]----------
   require(1 <= name.length && name.length <= 255, "Item name must be from 1 to 255 characters")
-
-  //--------[ Methods ]--------------
-  def getPrice: Int
 }
 
 case class SizableItem(
@@ -24,10 +22,7 @@ case class SizableItem(
   descr:   SizeDescription,
   imgLink: URL,
   group:   Group
-) extends Item {
-  //--------[ Methods ]--------------
-  override def getPrice: Int = ???
-}
+) extends Item
 
 case class NoSizeableItem(
   id:      Item.Id,
@@ -39,8 +34,6 @@ case class NoSizeableItem(
 ) extends Item {
   //--------[ Validations ]----------
   require(0 < price, "Price of item must be greater than 0")
-  //--------[ Methods ]--------------
-  override def getPrice: Int = ???
 }
 
 case class ComboItem(
@@ -55,8 +48,6 @@ case class ComboItem(
   override val group: Group = Item.Group.Combo
   //--------[ Validations ]----------
   require(0 < price, "Price of item must be greater than 0")
-  //-----------[ Methods ]--------------
-  override def getPrice: Int = ???
 }
 
 object Item {

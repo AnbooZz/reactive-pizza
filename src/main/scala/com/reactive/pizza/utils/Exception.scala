@@ -24,4 +24,6 @@ class PasswordNotMatchException extends APIException("") {
 class ExistedUsernameException(username: String) extends APIException("") {
   override def getMessage = s"Username: $username is existed. Please use another"
 }
+//----------[ Domain Exceptions ]------------------------
+class UnExpectedItemException(msg: String) extends APIException(msg)
 

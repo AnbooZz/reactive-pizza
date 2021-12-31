@@ -9,6 +9,7 @@ import scala.concurrent.Future
 @ImplementedBy(classOf[UserRepositoryImpl])
 trait UserRepository {
   //-----------[ Queries ]-----------------
+  def findById(userId: User.Id): Future[Option[User]]
   def findByUsername(v: String): Future[Option[User]]
   //-----------[ Commands ]---------------
   def store(user: User): Future[Unit]
