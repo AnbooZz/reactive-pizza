@@ -12,7 +12,7 @@ ThisBuild / scalaVersion := "2.13.7"
 val dbDependences = Seq(
   "mysql" % "mysql-connector-java" % "8.0.27",
   "com.typesafe.play" %% "play-slick" % "5.0.0",
-  "org.flywaydb" %% "flyway-play" % "7.18.0"
+  "org.flywaydb" %% "flyway-play" % "7.17.0"
 )
 
 //----------[ Common Setting ]-----------------
@@ -48,8 +48,7 @@ dockerChmodType    := UserGroupWriteExecute
 
 //------------[ Module setting ]---------------------------
 lazy val root = (project in file("."))
-  .enablePlugins(PlayScala)
-  .enablePlugins(DockerPlugin)
+  .enablePlugins(PlayScala, LauncherJarPlugin, DockerPlugin)
   .disablePlugins(PlayLayoutPlugin)
   .settings(commonSettings: _*)
   .settings(libraryDependencies ++= dbDependences)
