@@ -7,15 +7,16 @@ import com.reactive.pizza.repositories.persistences.tables.CouponDAO
 import com.reactive.pizza.repositories.persistences.{ ColumnCustomType, MySqlDBComponent }
 
 import javax.inject._
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.Future
 
 @Singleton
-class CouponRepositoryImpl @Inject()(couponDAO: CouponDAO, dbComponent: MySqlDBComponent)(itemRepository: ItemRepository)(implicit val ec: ExecutionContext)
+class CouponRepositoryImpl @Inject()(couponDAO: CouponDAO, dbComponent: MySqlDBComponent)(itemRepository: ItemRepository)
   extends CouponRepository with ColumnCustomType {
 
   //--------[ Properties ]----------------------
   import dbComponent.mysqlDriver.api._
-  private val db = dbComponent.dbAction
+  private val db          = dbComponent.dbAction
+  private implicit val ec = dbComponent.dbEC
 
   //----------[ Methods ]---------------------
   override def findById(code: Coupon.Id): Future[Option[Coupon]] = {

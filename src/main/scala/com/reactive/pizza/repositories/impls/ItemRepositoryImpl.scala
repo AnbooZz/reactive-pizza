@@ -8,17 +8,18 @@ import com.reactive.pizza.utils.FailedCachingException
 import play.api.cache.AsyncCacheApi
 
 import javax.inject.{ Inject, Singleton }
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 import scala.util.{ Failure, Success }
 
 @Singleton
-class ItemRepositoryImpl @Inject()(itemDAO: ItemDAO, dbComponent: MySqlDBComponent, cache: AsyncCacheApi)(implicit val ec: ExecutionContext)
+class ItemRepositoryImpl @Inject()(itemDAO: ItemDAO, dbComponent: MySqlDBComponent, cache: AsyncCacheApi)
   extends ItemRepository with ColumnCustomType {
 
   //--------------[ Properties ]---------------------------
   import dbComponent.mysqlDriver.api._
-  private val db = dbComponent.dbAction
+  private val db          = dbComponent.dbAction
+  private implicit val ec = dbComponent.dbEC
 
   private val ALL_ITEM_KEY   = "all_item"
   private val CACHED_TIMEOUT = 24.hours
