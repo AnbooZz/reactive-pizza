@@ -1,4 +1,7 @@
+import com.typesafe.sbt.packager.docker._
+import com.typesafe.sbt.packager.docker.DockerChmodType.UserGroupWriteExecute
 import play.sbt.routes.RoutesKeys
+
 RoutesKeys.routesImport := Seq.empty
 //-------[ Project Information ]------------
 name                     := "reactive-pizza"
@@ -9,10 +12,10 @@ ThisBuild / scalaVersion := "2.13.7"
 val dbDependences = Seq(
   "mysql" % "mysql-connector-java" % "8.0.27",
   "com.typesafe.play" %% "play-slick" % "5.0.0",
-  "org.flywaydb" %% "flyway-play" % "7.15.0"
+  "org.flywaydb" %% "flyway-play" % "7.18.0"
 )
 
-//----------[ Setting ]-----------------
+//----------[ Common Setting ]-----------------
 val commonSettings = List(
   scalacOptions ++= List(
     "-encoding", "utf8",
@@ -34,8 +37,19 @@ val commonSettings = List(
   )
 )
 
+//------------[ Docker setting ]---------------------------
+packageName        := "reactive-pizza"
+version            := "1.0.0"
+maintainer         := "anboo33"
+dockerBaseImage    := "openjdk:11"
+dockerExposedPorts := Seq(9000, 9000)
+daemonUser         := "root"
+dockerChmodType    := UserGroupWriteExecute
+
+//------------[ Module setting ]---------------------------
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala)
+  .enablePlugins(DockerPlugin)
   .disablePlugins(PlayLayoutPlugin)
   .settings(commonSettings: _*)
   .settings(libraryDependencies ++= dbDependences)

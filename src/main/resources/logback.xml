@@ -1,7 +1,8 @@
 <!-- https://www.playframework.com/documentation/latest/SettingsLogger -->
 <configuration>
-    <property name="loggingDir" value="${application.home:-.}/logs"/>
+    <property name="loggingDir" value="/var/log/reactive-pizza"/>
     <conversionRule conversionWord="coloredLevel" converterClass="play.api.libs.logback.ColoredLevel" />
+
     <!--
         Application logs (includes all logs)
        -->
@@ -61,13 +62,13 @@
     <logger name="play" level="INFO" />
     <logger name="application" level="INFO" />
 
-    <!-- general logger -->
-    <logger name="reactivePizza.logger" level="DEBUG"/>
-
     <logger name="akka" level="OFF" />
 
+    <!-- general logger -->
+    <logger name="reactive-pizza.logger" level="DEBUG"/>
+
     <!-- unexpected error logger -->
-    <logger name="reactivePizza.unexpectedError" level="DEBUG">
+    <logger name="reactive-pizza.unexpectedError" level="DEBUG">
         <appender-ref ref="UNEXPECTED_ERROR_LOG"/>
     </logger>
 
@@ -81,5 +82,4 @@
         <appender-ref ref="ASYNCFILE" />
         <appender-ref ref="ASYNCSTDOUT" />
     </root>
-
 </configuration>
