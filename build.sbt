@@ -1,4 +1,3 @@
-import com.typesafe.sbt.packager.docker._
 import com.typesafe.sbt.packager.docker.DockerChmodType.UserGroupWriteExecute
 import play.sbt.routes.RoutesKeys
 

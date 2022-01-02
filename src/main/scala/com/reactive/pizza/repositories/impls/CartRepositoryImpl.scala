@@ -9,17 +9,18 @@ import com.reactive.pizza.repositories.persistences.{ ColumnCustomType, MySqlDBC
 import play.api.libs.json.Json
 
 import javax.inject.{ Inject, Singleton }
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.Future
 
 @Singleton
 class CartRepositoryImpl @Inject()(cartDAO: CartDAO, dbComponent: MySqlDBComponent)(
   itemRepository:   ItemRepository,
   couponRepository: CouponRepository
-)(implicit val ec: ExecutionContext) extends CartRepository with ColumnCustomType {
+) extends CartRepository with ColumnCustomType {
 
   //--------[ Properties ]----------------------
   import dbComponent.mysqlDriver.api._
-  private val db = dbComponent.dbAction
+  private val db          = dbComponent.dbAction
+  private implicit val ec = dbComponent.dbEC
 
   //----------[ Methods ]---------------------
   override def findByUserId(id: User.Id): Future[Option[Cart]] = findBy {

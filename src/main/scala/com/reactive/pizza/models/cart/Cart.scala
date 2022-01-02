@@ -1,9 +1,10 @@
 package com.reactive.pizza.models.cart
 
 import com.reactive.pizza.models.coupon.{ Coupon, MoneyCoupon }
+import com.reactive.pizza.models.coupon.Coupon.Effect
 import com.reactive.pizza.models.item.PickedItem
 import com.reactive.pizza.models.user.User
-import com.reactive.pizza.utils.Encrypter
+import com.reactive.pizza.utils.{ InvalidCouponException, Encrypter }
 import org.joda.time.DateTime
 
 import scala.math.Ordered.orderingToOrdered
@@ -30,7 +31,15 @@ case class Cart(
     }
   }
 
-  def updateCoupon(coupon: Option[Coupon]): Cart = this.copy(coupon = coupon)
+  def updateCoupon(coupon: Option[Coupon]): Cart =
+    coupon match {
+      case Some(cp) if cp.isExpired                        =>
+        throw new InvalidCouponException("Coupon is out of time")
+      case Some(cp) if !cp.effects.contains(Effect.Online) =>
+        throw new InvalidCouponException("Coupon is only use at store")
+
+      case _ => this.copy(coupon = coupon)
+    }
 
   def addItem(pikItem: PickedItem): Cart = {
     val updatedPikItemMap = pikItemMap.get(pikItem.item.id) match {

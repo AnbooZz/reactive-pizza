@@ -1,6 +1,6 @@
 package com.reactive.pizza.controllers.common
 
-import com.reactive.pizza.utils.{ EntityNotFoundException, ExistedUsernameException, PasswordNotMatchException, SecurityPolicyException, UnAuthorizedException }
+import com.reactive.pizza.utils.{ InvalidCouponException, EntityNotFoundException, ExistedUsernameException, PasswordNotMatchException, SecurityPolicyException, UnAuthorizedException }
 import play.api.{ Configuration, Environment, Logging, OptionalSourceMapper }
 import play.api.http.DefaultHttpErrorHandler
 import play.api.mvc._
@@ -29,6 +29,7 @@ class ErrorHandler @Inject()(
 
     Future.successful(
       ex match {
+        case e: InvalidCouponException    => ErrorHandler.badRequest(e.getMessage)
         case e: PasswordNotMatchException => ErrorHandler.badRequest(e.getMessage)
         case e: ExistedUsernameException  => ErrorHandler.badRequest(e.getMessage)
         case _: UnAuthorizedException     => ErrorHandler.unAuthorized

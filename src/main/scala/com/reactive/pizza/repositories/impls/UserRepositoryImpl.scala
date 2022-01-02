@@ -6,15 +6,16 @@ import com.reactive.pizza.repositories.persistences.tables.UserDAO
 import com.reactive.pizza.repositories.persistences.{ ColumnCustomType, MySqlDBComponent }
 
 import javax.inject._
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.Future
 
 @Singleton
-class UserRepositoryImpl @Inject()(userDAO: UserDAO, dbComponent: MySqlDBComponent)(implicit val ec: ExecutionContext)
+class UserRepositoryImpl @Inject()(userDAO: UserDAO, dbComponent: MySqlDBComponent)
   extends UserRepository with ColumnCustomType {
 
   //--------------[ Properties ]---------------------------
   import dbComponent.mysqlDriver.api._
-  private val db = dbComponent.dbAction
+  private val db          = dbComponent.dbAction
+  private implicit val ec = dbComponent.dbEC
 
   //----------[ Methods ]---------------------
   override def findByUsername(v: String): Future[Option[User]] = db.run {
