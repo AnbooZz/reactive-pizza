@@ -12,6 +12,12 @@ abstract class Coupon {
 
   //----------[ Validations ]--------------
   require(1 <= descr.length && descr.length <= 255, "Description of coupon must be from 1 to 255 characters")
+
+  //----------[ Methods ]------------------
+  def isExpired: Boolean = {
+    val now = new DateTime()
+    expiredDate.isBefore(now)
+  }
 }
 
 case class GiftCoupon(

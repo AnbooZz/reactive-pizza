@@ -26,4 +26,5 @@ class ExistedUsernameException(username: String) extends APIException("") {
 }
 //----------[ Domain Exceptions ]------------------------
 class UnExpectedItemException(msg: String) extends APIException(msg)
+class InvalidCouponException(msg: String) extends APIException(msg)
 
