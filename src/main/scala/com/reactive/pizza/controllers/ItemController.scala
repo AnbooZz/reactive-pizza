@@ -1,7 +1,7 @@
 package com.reactive.pizza.controllers
 
 import com.reactive.pizza.controllers.common.BaseController
-import com.reactive.pizza.dummy.ItemDummy
+import com.reactive.pizza.dummy.{ CouponDummy, ItemDummy }
 import com.reactive.pizza.jsons.writes.ItemDTO
 import com.reactive.pizza.models.item.Item
 import com.reactive.pizza.repositories.ItemRepository
@@ -14,7 +14,8 @@ import scala.concurrent.ExecutionContext
 class ItemController @Inject()(
   cc:             ControllerComponents,
   itemRepository: ItemRepository,
-  itemDummy:      ItemDummy
+  itemDummy:      ItemDummy,
+  couponDummy:    CouponDummy
 )(implicit val ec: ExecutionContext) extends BaseController(cc) {
 
   def list = Action.async {

@@ -5,6 +5,7 @@ import com.reactive.pizza.models.item.Item
 import com.reactive.pizza.repositories.{ CouponRepository, ItemRepository }
 import com.reactive.pizza.repositories.persistences.tables.CouponDAO
 import com.reactive.pizza.repositories.persistences.{ ColumnCustomType, MySqlDBComponent }
+import play.api.libs.json.Json
 
 import javax.inject._
 import scala.concurrent.Future
@@ -19,20 +20,28 @@ class CouponRepositoryImpl @Inject()(couponDAO: CouponDAO, dbComponent: MySqlDBC
   private implicit val ec = dbComponent.dbEC
 
   //----------[ Methods ]---------------------
+  override def countAll(): Future[Int] = db.run {
+    couponDAO.coupons.map(_.id).size.result
+  }
+
   override def findById(code: Coupon.Id): Future[Option[Coupon]] = {
     for {
       couponR  <- db.run(couponDAO.coupons.filter(_.id === code).result.headOption)
-      itemOptR <- couponR match {
+      items    <- couponR match {
         case Some(c) =>
           c._6 match {
-            case Some(_) => Future.successful(None)
-            case None    => itemRepository.findById(Item.Id(c._5))
+            case Some(_) =>
+              Future.successful(Nil)
+            case None    =>
+              itemRepository.filterByIds {
+                Json.parse(c._5).as[Seq[String]].map(Item.Id)
+              }
           }
         case None    =>
-          Future.successful(None)
+          Future.successful(Nil)
       }
     } yield {
-      couponR.map(couponDAO.apply(_, itemOptR))
+      couponR.map(couponDAO.apply(_, items))
     }
   }
 

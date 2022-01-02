@@ -9,6 +9,7 @@ import scala.concurrent.Future
 @ImplementedBy(classOf[CouponRepositoryImpl])
 trait CouponRepository {
   //-----------[ Queries ]-----------------
+  def countAll(): Future[Int]
   def findById(code: Coupon.Id): Future[Option[Coupon]]
   //-----------[ Commands ]---------------
   def store(coupon: Coupon): Future[Unit]

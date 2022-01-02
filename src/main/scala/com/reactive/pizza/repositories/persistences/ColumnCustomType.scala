@@ -36,7 +36,10 @@ trait ColumnCustomType {
   )
   //-----------[ Coupon Custom ]-------------------
   implicit val couponIdType = MappedColumnType.base[Coupon.Id, String](id => id.v,     v => Coupon.Id(v))
-  implicit val effectType   = MappedColumnType.base[Coupon.Effect, String](ef => ef.v, v => Coupon.Effect(v))
+  implicit val effectType   = MappedColumnType.base[Seq[Coupon.Effect], String](
+    ef => Json.toJson(ef.map(_.v)).toString(),
+    v  => Json.parse(v).as[Seq[String]].map(Coupon.Effect(_))
+  )
   implicit val unitType     = MappedColumnType.base[Coupon.Unit, String](u => u.v,     v => Coupon.Unit(v))
   //-----------[ Cart Custom ]-------------------
   implicit val cartIdType   = MappedColumnType.base[Cart.Id, String](id => id.v, v => Cart.Id(v))

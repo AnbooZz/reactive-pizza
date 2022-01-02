@@ -8,7 +8,7 @@ abstract class Coupon {
   val id:          Coupon.Id
   val descr:       String
   val expiredDate: DateTime
-  val effect:      Effect
+  val effects:     Seq[Effect]
 
   //----------[ Validations ]--------------
   require(1 <= descr.length && descr.length <= 255, "Description of coupon must be from 1 to 255 characters")
@@ -18,15 +18,15 @@ case class GiftCoupon(
   id:          Coupon.Id,
   descr:       String,
   expiredDate: DateTime,
-  effect:      Effect,
-  value:       Item
+  effects:     Seq[Effect],
+  values:      Seq[Item]
 ) extends Coupon
 
 case class MoneyCoupon(
   id:          Coupon.Id,
   descr:       String,
   expiredDate: DateTime,
-  effect:      Effect,
+  effects:     Seq[Effect],
   value:       Int,
   unit:        Unit
 ) extends Coupon {
