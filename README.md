@@ -9,8 +9,8 @@ This repository is the small sample of n-layers web api using play-scala framewo
 |Entity|Class|Description|
 |---|---|---|
 |User||Customer must be register/login before make an order|
-|Item|SizeableItem|Food have size S or M or L. Choose one size and quantity to add  to cart|
-||NoSizeableItem|Food have no size. Only choose quantity to add cart|
+|Item|SizeableItem|Pizza have size S or M or L. Choose one size and quantity to add  to cart|
+||NoSizeableItem|Another food have no size. Only choose quantity to add cart|
 ||ComboItem|Combo contains many foods|
 |Coupon|MoneyCoupon|Reduce money by directly or percent|
 ||GiftCoupon|Give one other food to attach order|
