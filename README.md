@@ -32,7 +32,7 @@ Base path: `/api/v1`
 |5|Get user's cart|GET|/cart?userId=:id|
 |6|Add food to cart|POST|/cart?userId=:id|
 |7|Update cart|PUT|/cart?userId=:id|
-Detail at [here]("src/resources/routes")
+Detail at [here](src/resources/routes)
 
 ## Libs
 ```
@@ -46,7 +46,7 @@ Detail at [here]("src/resources/routes")
 
 ## Setup
 - Install JDK 8 or JDK 11 is required
-- Install Mysql server 8.0. View [file]("src/resources/application.conf") to get database config information
+- Install Mysql server 8.0. View [file](src/resources/application.conf) to get database config information
 - Install Sbt
 
 ## Running
