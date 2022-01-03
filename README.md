@@ -1,5 +1,5 @@
 # Reactive Pizza (2022/01/01)
-***
+
 ## Preface
 
 This repository is the small sample of n-layers web api using play-scala framework for ordering food. The project uses reactive programing to implement with `Future` that is managed by Akka Actor System
