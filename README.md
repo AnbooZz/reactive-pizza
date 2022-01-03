@@ -52,8 +52,8 @@ Detail at [here](src/main/resources/routes)
 
 ## Running
 
-|||
-|--|--|
+||||
+|--|--|--|
 |1|Dev mode|`sbt run`|
 |2|Production mode|`sbt 'runProd'` or `sbt start`|
 |3|Debug mode|`sbt -jvm-debug 5005 run` && `attach process 5005` at InteIJ IDEA|
