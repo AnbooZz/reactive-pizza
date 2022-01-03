@@ -23,7 +23,7 @@ Default port at local: `localhost:9000`
 
 Base path: `/api/v1`
 
-|#|Name|Method|Path|
+||Name|Method|Path|
 |---|-----|------|------|
 |1|Login|POST|/user?action=login|
 |2|Register|POST|/user?action=register|
@@ -51,7 +51,7 @@ Detail at [here]("src/resources/routes")
 
 ## Running
 
-|#|||
+||||
 |--|--|
 |1|Dev mode|`sbt run`|
 |2|Production mode|`sbt 'runProd'` or `sbt start`|
