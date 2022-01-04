@@ -47,7 +47,7 @@ dockerChmodType    := UserGroupWriteExecute
 
 //------------[ Module setting ]---------------------------
 lazy val root = (project in file("."))
-  .enablePlugins(PlayScala, LauncherJarPlugin, DockerPlugin)
+  .enablePlugins(PlayScala, LauncherJarPlugin, DockerPlugin, GraalVMNativeImagePlugin)
   .disablePlugins(PlayLayoutPlugin)
   .settings(commonSettings: _*)
   .settings(libraryDependencies ++= dbDependences)

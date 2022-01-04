@@ -58,6 +58,7 @@ Detail at [here](src/main/resources/routes)
 |2|Production mode|`sbt 'runProd'` or `sbt start`|
 |3|Debug mode|`sbt -jvm-debug 5005 run` && `attach process 5005` at InteIJ IDEA|
 |4|Build docker file| `sbt docker:publishLocal`|
+|5|GraaVM build|`sbt 'show graalvm-native-image:packageBin'`|
 
 Open browser at: `http://localhost:9000` to migrate database
 
